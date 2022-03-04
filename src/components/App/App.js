@@ -2,15 +2,15 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import { HashRouter as Router, Route, Link } from 'react-router-dom';
 import Search from '../Search/Search';
-import FavoritesList from '../FavoriteList/FavoriteList'
-import FavoriteListItem from '../FavoritesListItem/FavoritesListItem'
+import FavoritesList from '../FavoritesList/FavoritesList';
+import FavoritesListItem from '../FavoritesListItem/FavoritesListItem';
 import { Button } from '@material-ui/core';
 
 class App extends Component {
 
   state = {
     status: true,
-    buttonInjection: 'Favorites'
+    buttonInjection: 'Favorites',
     pageRender: <Search />
   }
 
