@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { HashRouter as Router, Route, Link } from 'react-router-dom';
 import Search from '../Search/Search'
-import FavoriteList from '../FavoriteList/FavoriteList'
+import FavoritesList from '../FavoritesList/FavoritesList'
 
 
-class FavoriteListItem extends Component {
+class FavoritesListItem extends Component {
 
     removeItem = () => {
         this.props.dispatch({
@@ -54,4 +54,4 @@ class FavoriteListItem extends Component {
 const mapReduxStateToProps = (reduxState) => ({
     reduxState
 });
-export default connect(mapReduxStateToProps)(FavoriteListItem);
+export default connect(mapReduxStateToProps)(FavoritesListItem);
