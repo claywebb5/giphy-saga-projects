@@ -1,10 +1,10 @@
 const express = require('express');
-const axios = require("axios");
 const pool = require('../modules/pool');
 const axios = require('axios');
+const router = express.Router();
 require("dotenv").config();
 
-const router = express.Router();
+
 
 router.get('/:id', (req,res) => {
     console.log('req.params is', req.params);
