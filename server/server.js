@@ -1,10 +1,7 @@
 const express = require('express');
+const app = express();
 const bodyParser = require('body-parser');
 require('dotenv').config();
-
-const app = express();
-// App PORT set with production check
-const PORT = process.env.PORT || 5000;
 
 // Route includes
 const favoriteRouter = require('./routes/favorite.router');
@@ -22,6 +19,10 @@ app.use(express.static('build'));
 app.use('/api/favorite', favoriteRouter);
 app.use('/api/category', categoryRouter);
 app.use('/api/giphy', giphyRouter);
+
+
+// App PORT set with production check
+const PORT = process.env.PORT || 5000;
 
 // Listen
 app.listen(PORT, () => {
