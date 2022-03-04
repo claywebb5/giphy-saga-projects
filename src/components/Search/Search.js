@@ -1,4 +1,8 @@
-import React from "react";
+import React, {Component} from "react";
+import {connect} from 'react-redux';
+// import { HashRouter as Router, Route, Link } from "react-router-dom";
+// import FavoriteList from '../FavoriteList/FavoriteList';
+// import FavoriteListItem from '../FavoriteListItem/FavoriteListItem';
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -6,6 +10,11 @@ function Search() {
   const dispatch = useDispatch();
   const [searchGifs, setSearchGifs] = useState("");
   const searchResults = useSelector((store) => store.searchResults);
+
+  const addToFavorites = (item) => {
+    console.log('Adding a new Fav', item);
+    dispatch({ type: "ADD_FAVORITE", payload: item});
+  }
 
   const submitHandler = () => {
     console.log("in the submit handler", searchGifs);
@@ -27,11 +36,20 @@ function Search() {
           <span></span>
         ) : (
           searchResults.data.map((item, i) => (
-            <img key={i} src={item.images.fixed_height.url} />
+            <div>
+              <img key={i} src={item.images.fixed_height.url} />
+              <button onClick={() => addToFavorites(item.url)}>Favorite</button>
+            </div>
           ))
         )}
       </div>
     </>
   );
 }
-export default Search;
+
+const mapReduxStateToProps = (reduxState) => ({
+  reduxState
+});
+
+export default connect(mapReduxStateToProps)(Search);
+// export default Search;

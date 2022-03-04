@@ -68,7 +68,12 @@ function* getFavoriteSaga() {
 function* addGifToFavorites(action) {
     const objectToPost = action.payload;
     try {
-        yield axios.post('/api/favorite', {objectToPost});
+        // yield axios.post('/api/favorite', objectToPost);
+        yield axios({
+            method: 'POST',
+            url: '/api/favorite',
+            data: objectToPost
+        })
         yield put({type: 'FETCH_FAVORITES'});
     } catch (error) {
         console.log('Error adding a new favorite', error);
