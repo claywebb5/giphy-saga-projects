@@ -1,14 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App/App';
-import {takeEvery, put} from 'redux-saga/effects';
 import { createStore, combineReducers, applyMiddleware } from 'redux'; 
 import { Provider } from 'react-redux'; 
 import logger from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
+import {takeEvery, put} from 'redux-saga/effects';
 import axios from 'axios';
 //=================<IMPORTS>===========================================
 
+// Create sagaMiddleware-----------------------------------------------
+const sagaMiddleware = createSagaMiddleware();
 
 // Create the rootSaga generator function------------------------------
 function* rootSaga() {
@@ -16,10 +18,10 @@ function* rootSaga() {
     yield takeEvery('SEARCH_GIFS', searchGifs)
     yield takeEvery('FETCH_FAVORITE', getFavoriteSaga)
     yield takeEvery('ADD_FAVORITE', addGifToFavorites)
+    yield takeEvery('CATEGORIZE_GIFS', categorizeGifs);
+    yield takeEvery('DELETE_GIFS', deleteGifs);
 }
 
-// Create sagaMiddleware-----------------------------------------------
-const sagaMiddleware = createSagaMiddleware();
 
 // GET GIFS TO SEARCH PAGE---------------------------------------------------
 function* searchGifs(action){
@@ -72,17 +74,50 @@ function* addGifToFavorites(action) {
         // yield axios.post('/api/favorite', objectToPost);
         yield axios({
             method: 'POST',
-            url: '/api/favorite',
+            url: `/api/favorite/${objectToPost}`,
             data: objectToPost
         })
-        yield put({type: 'FETCH_FAVORITES'});
+        yield put({type: 'FETCH_FAVORITE'});
     } catch (error) {
         console.log('Error adding a new favorite', error);
     }
 }
 
+// SET CATEGORY===============================================================================
+function* categorizeGifs(action) {
+    yield console.log('logging acion.payload.id in categorizeGifs', action.payload.id);
+    // const objectToPost = action.payload;
+    try {
+        yield axios({
+            method: 'PUT',
+            url: `/api/favorite/${action.payload.id}`,
+            data: {category_id: action.payload.category_id}
+        })
+        yield put({type: 'FETCH_FAVORITE'})
+    } catch (error) {
+        console.log(error);
+    }
+}
 
-
+// DELETE===============================================================================
+function* deleteGifs(action) {
+    console.log('logging action.payload from delete', action.payload);
+    let gifId = action.payload;
+    try {
+        yield axios({
+            method: 'DELETE',
+            url: `/api/favorite/${action.payload}`,
+            data: {gifId}
+        })
+        yield put({
+            type: 'FETCH_FAVORITE'
+        })
+    }
+    catch (error) {
+        console.log(error);
+        alert('Unable to delete item');
+    };
+}
 
 
 

@@ -55,3 +55,6 @@ const mapReduxStateToProps = (reduxState) => ({
 
 export default connect(mapReduxStateToProps)(Search);
 // export default Search;
+
+
+// ============================<OLD INDEX.JS FILE>===================
