@@ -1,55 +1,62 @@
-import React, {Component} from "react";
-import {connect} from 'react-redux';
-// import { HashRouter as Router, Route, Link } from "react-router-dom";
-// import FavoriteList from '../FavoriteList/FavoriteList';
-// import FavoriteListItem from '../FavoriteListItem/FavoriteListItem';
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { HashRouter as Router, Route, Link } from 'react-router-dom';
+import FavoritesList from '../FavoritesList/FavoritesList'
+import FavoritesListItem from '../FavoritesListItem/FavoritesListItem'
 
-function Search() {
-  const dispatch = useDispatch();
-  const [searchGifs, setSearchGifs] = useState("");
-  const searchResults = useSelector((store) => store.searchResults);
+class Search extends Component {
 
-  const addToFavorites = (item) => {
-    console.log('Adding a new Fav', item);
-    dispatch({ type: "ADD_FAVORITE", payload: item});
-  }
+    state = {
+        searchTerm: ''
+    }
 
-  const submitHandler = () => {
-    console.log("in the submit handler", searchGifs);
-    dispatch({ type: "SEARCH_GIFS", payload: searchGifs });
-    setSearchGifs("");
-  };
+    addToFavorites = (item) => {
+        this.props.dispatch({
+            type: 'ADD_FAVORITE',
+            payload: item
+        })
+    }
 
-  return (
-    <>
-      <input
-        value={searchGifs}
-        onChange={(evt) => setSearchGifs(evt.target.value)}
-      />
+    getGIFs = () => {
+        this.props.dispatch({
+            type: 'GET_GIPHY'
+        })
+    }
 
-      <button onClick={submitHandler}> Search the GIFs </button>
+    handleChange = (event) => {
+        this.setState({
+            searchTerm: event.target.value
+        })
+    }
 
-      <div>
-        {searchResults.length === 0 ? (
-          <span></span>
-        ) : (
-          searchResults.data.map((item, i) => (
+    searchGiphy = () => {
+        this.props.dispatch({
+            type:'SEARCH_GIFS',
+            payload: this.state.searchTerm
+        })
+        this.getGIFs();
+    }
+
+    render() {
+        return (
             <div>
-              <img key={i} src={item.images.fixed_height.url} />
-              <button onClick={() => addToFavorites(item.url)}>Favorite</button>
+                <h1>Search Form!</h1>
+                <input onChange={(event) => this.handleChange(event)} type="text" placeholder=""></input>
+                <button onClick={this.searchGiphy}>Search</button>
+                <ul>
+                    {this.props.reduxState.searchResults
+                    .map((item)=><li key={item.id}><img src={item.url} width="300px"/></li>)}
+                    <button onClick={() => this.addToFavorites(this.props.reduxState.searchResults[0])}>Add to Favorites</button>
+                </ul>
             </div>
-          ))
-        )}
-      </div>
-    </>
-  );
+        );
+    }
 }
 
 const mapReduxStateToProps = (reduxState) => ({
-  reduxState
+    reduxState
 });
 
 export default connect(mapReduxStateToProps)(Search);
-// export default Search;
+
+//Send resp
