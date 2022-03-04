@@ -24,6 +24,7 @@ const sagaMiddleware = createSagaMiddleware();
 // GET GIFS TO SEARCH PAGE---------------------------------------------------
 function* searchGifs(action){
    console.log( action.payload, 'baby');
+//    let response = 
     try {
         const results = yield axios.get(`/api/giphy/${action.payload}` )
         yield put({ type: 'SET_RESULTS', payload: results.data })

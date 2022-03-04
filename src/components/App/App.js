@@ -3,7 +3,7 @@ import React from 'react';
 
 import NavBar from '../NavBar/NavBar';
 import Search from '../Search/Search';
-import Favorites from '../Favorites/Favorites';
+import Favorites from '../FavoritesList/FavoritesList';
 
 import { HashRouter as Router, Route, Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";

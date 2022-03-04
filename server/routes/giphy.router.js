@@ -1,5 +1,7 @@
 const express = require('express');
 const axios = require("axios");
+const pool = require('../modules/pool');
+const axios = require('axios');
 require("dotenv").config();
 
 const router = express.Router();
@@ -7,7 +9,7 @@ const router = express.Router();
 router.get('/:id', (req,res) => {
     console.log('req.params is', req.params);
     axios.get(`http://api.giphy.com/v1/gifs/search?api_key=${process.env.GIPHY_API_KEY}&q=${req.params.id}&limit=50`)
-    .then( response => {
+    .then((response) => {
         console.log('response is', response);
         res.send(response.data)
     }).catch( error => {

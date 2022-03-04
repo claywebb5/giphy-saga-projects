@@ -5,8 +5,8 @@ const router = express.Router();
 
 // return all favorite images
 router.get('/', (req, res) => {
-  let queryText = 'SELECT * FROM favorites;';
-  // let queryText = 'SELECT favorites.id, favorites.url, favorites.category_id, category.name FROM favorites JOIN category ON favorites.category_id = category.id;';
+  // let queryText = 'SELECT * FROM favorites;';
+  let queryText = 'SELECT favorites.id, favorites.url, favorites.category_id, category.name FROM favorites JOIN category ON favorites.category_id = category.id;';
   pool.query(queryText)
   .then((result) => {
     // console.log('Success!');
@@ -21,10 +21,10 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
   let newFav = req.body;
   console.log('In favorite.router.js and the req.body is:', newFav);
-  let sqlQuery = `INSERT INTO "favorites" ("url")
-                    VALUES ($1);`;
+  let sqlQuery = `INSERT INTO "favorites" ("url", "name")
+                    VALUES ($1, $2);`;
   // pool.query(queryText, [newFavorite.url, newFavorite.category_id])
-  pool.query(sqlQuery, [newFav])
+  pool.query(sqlQuery, [newFav.url, newFav.name])
 
   .then((response) => {
     console.log('Successful Post!!', response);

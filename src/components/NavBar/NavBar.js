@@ -34,7 +34,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Search from '../Search/Search'
-import Favorites from '../Favorites/Favorites'
+import Favorites from '../FavoritesList/FavoritesList'
 import { Button } from '@material-ui/core';
 // import './App.css';
 
