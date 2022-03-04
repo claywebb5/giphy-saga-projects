@@ -1,34 +1,39 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { HashRouter as Router, Route, Link } from 'react-router-dom';
+import Search from '../Search/Search';
+import FavoritesListItem from '../FavoritesListItem/FavoritesListItem'
 
-function Favorites() {
 
-    const dispatch = useDispatch();
-    const favorites = useSelector(store => store.favoritesList)
+class FavoritesList extends Component {
 
-    useEffect(() => {
-        dispatch({type: 'FETCH_FAVORITE'})
-    }, []);
+    componentDidMount = () => {
+        this.getFavorites();
+    }
 
-    
-    return (
-       <>
-      <p>FAVES GO HERE</p>
-      <ul>
-      {favorites.map((favorite, i) => (
-          <li key={i}>
-            <img src={favorite.url}></img><br></br>
-            {/* <button onClick={makeFunny}>funny</button>
-            <button onClick={makeCohort}>cohort</button>
-            <button onClick={makeCartoon}>cartoon</button>
-            <button onClick={makeNsfw}>nsfw</button>
-            <button onClick={makeMeme}>meme</button> */}
-          </li>
-        ))}
-      </ul>
-       </>
-    )
-    
+    getFavorites = () => {
+        this.props.dispatch({
+            type: 'FETCH_FAVORITE'
+        })
+    }
+
+
+    render() {
+        return (
+            <div>
+                <h1>Favorites!</h1><br />
+                {this.props.reduxState.favoritesList.map((item) => {
+                    return (
+                        <FavoritesListItem key={item.id} item={item} />
+                    );
+                })}
+            </div>
+        );
+    }
 }
-export default Favorites;
+
+const mapReduxStateToProps = (reduxState) => ({
+    reduxState
+});
+
+export default connect(mapReduxStateToProps)(FavoritesList);
